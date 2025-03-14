@@ -127,8 +127,6 @@ public void AddMember(string member)
 }
 ```
 
-[Tasks](https://www.notion.so/Tasks-192b7c12f3128013b27efccf50830bc4?pvs=21)
-
 ## A devenit
 
 ```csharp
