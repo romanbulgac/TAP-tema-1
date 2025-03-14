@@ -1,4 +1,7 @@
-﻿namespace ConsoleProject
+﻿using ConsoleProject.Models;
+using ConsoleProject.Services;
+using ConsoleProject.System;
+namespace ConsoleProject
 {
     internal class Program
     {
@@ -6,19 +9,22 @@
         {
             Console.WriteLine("Starting Client...");
 
-            // This code demonstrates a library system that violates SOLID principles.
-            LibrarySystem library = new LibrarySystem();
-            library.AddBook("The Great Gatsby");
-            library.AddMember("John Doe");
-            library.BorrowBook("John Doe", "The Great Gatsby");
-            library.ReturnBook("John Doe", "The Great Gatsby");
+            ILoanService loanService = new LoanService();
+            IMemberRepository memberRepository = new MemberRepository();
+            IBookRepository  bookRepository = new BookRepository();
 
-            // Hints:
-            // 1. SRP: Separate the responsibilities of managing books and members into different classes.
-            // 2. OCP: Use inheritance or interfaces to allow adding new book types without modifying existing code.
-            // 3. LSP: Ensure that derived classes can be substituted for their base classes without altering the correctness of the program.
-            // 4. ISP: Split the LibrarySystem interface into smaller, more specific interfaces.
-            // 5. DIP: Depend on abstractions (e.g., interfaces) rather than concrete classes.
+            LibrarySystem library = new LibrarySystem(bookRepository, memberRepository, loanService);
+
+            LibraryItem book1 = new Book("The Great Gatsby", "1234", "F. Scott Fitzgerald", "Fiction", 1925);
+            LibraryItem book2 = new Book("Moby Dick", "5678", "Herman Melville", "Adventure", 1851);
+            library.AddBook(book1);
+            library.AddBook(book2);
+
+            LibraryUser user1 = new Member("John Doe", "john.doe@mail.com","+123 012 123", "Romania, Iasi, bd. Carol I, 11");
+            library.AddMember(user1);
+            library.BorrowBook(user1, book1);
+            library.ReturnBook(user1, book1);
+            library.ReturnBook(user1, book1);
         }
     }
 }
